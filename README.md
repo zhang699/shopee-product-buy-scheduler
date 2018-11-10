@@ -10,8 +10,8 @@
 - Step2: Select product's spec
 - Step3: Select schedule datetime
 
-![](https://media.giphy.com/media/3CYmCntlBKGvFhQhvO/giphy.gif)
+![](https://www.youtube.com/watch?v=FO9I0xfKKqM&feature=youtu.be)
 
 ### Execute manually
 
-![](https://media.giphy.com/media/BpYuc9Sq3PQkPcLdJP/giphy.gif)
+![](https://www.youtube.com/watch?v=6CKyQ3hVCTs&feature=youtu.be)
