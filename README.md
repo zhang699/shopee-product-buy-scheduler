@@ -2,8 +2,6 @@
 
 - Schedule running your Shopee buy action at specified datetime.
 
-## Demo
-
 ### Screenshot
 
 ![](https://i.imgur.com/DUGZ7Se.png)
@@ -14,8 +12,10 @@
 - Step2: Select product's spec
 - Step3: Select schedule datetime
 
-![](https://www.youtube.com/watch?v=FO9I0xfKKqM&feature=youtu.be)
+![See Demo](https://www.youtube.com/watch?v=FO9I0xfKKqM)
 
 ### Execute manually
 
-![](https://www.youtube.com/watch?v=6CKyQ3hVCTs&feature=youtu.be)
+- Click `立即執行`
+
+![See Demo](https://youtu.be/6CKyQ3hVCTs)
