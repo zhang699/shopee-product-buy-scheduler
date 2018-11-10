@@ -29,7 +29,7 @@ class ShopeeController extends EventEmitter {
     this.emit("schedule", bundle);
   }
   async execute(schedule) {
-    await this.puppeteer.start({ headless: false });
+    await this.puppeteer.start({ headless: true, multiple: true });
     await this.goTo(schedule.url);
     try {
       await this.waitForAccount(1000);
@@ -44,13 +44,22 @@ class ShopeeController extends EventEmitter {
     }
 
     const page = this.puppeteer.getCurrentPage();
-    await page.waitForSelector(SPEC_SELCTOR);
+    this.notifyScheduleProgress({
+      name: "startAddToCart",
+      target: { ...schedule }
+    });
     //const productSpecs = await page.$$(".product-briefing .product-variation");
-
-    const [specButton] = await page.$x(
-      `//button[contains(text(), '${schedule.specname}')]`
-    );
-    await specButton.click();
+    if (schedule.specname) {
+      this.notifyScheduleProgress({
+        name: "selectSpec",
+        target: { ...schedule }
+      });
+      await page.waitForSelector(SPEC_SELCTOR);
+      const [specButton] = await page.$x(
+        `//button[contains(text(), '${schedule.specname}')]`
+      );
+      await specButton.click();
+    }
 
     const buyButton = await page.$(".product-briefing .btn-solid-primary");
     await buyButton.click();
@@ -60,6 +69,9 @@ class ShopeeController extends EventEmitter {
       name: "addedToCart",
       target: { ...schedule }
     });
+
+    //.toast
+
     await this.click(page, ".cart-page-footer__checkout-text", {
       wait: true
     });

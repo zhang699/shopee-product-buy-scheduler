@@ -99,14 +99,6 @@
           this.specname = spec.text;
           this.hint = `選擇產品規格${this.specname}`;
         },
-
-        async confirmSpec() {
-          await shopeeController.confirmSpec({
-            name: this.specname,
-            url: this.url,
-            productname: this.productname
-          });
-        },
         async removeSchedule(schedule) {
           const scheduler = await shopeeController.getScheduler();
           await scheduler.removeSchedule({ id: schedule.id });
@@ -121,21 +113,28 @@
           });
           await this.reloadSchedulelist(scheduler);
         },
+        clearHint() {
+          this.hint = "";
+          this.executingProgress = "";
+        },
         async executeSchedule(schedule) {
+          this.clearHint();
           shopeeController.on(
             "schedule",
             rpc.handle((data) => {
               const { name, target } = data;
               const scheduleTarget = this.getScheduleTarget(target);
+              this.hint = `${scheduleTarget.name}`;
               if (name === "addedToCart") {
-                this.hint = `${scheduleTarget.name}`;
                 this.executingProgress = `已加入購物車`;
               } else if (name === "madeTransaction") {
-                this.hint = `${scheduleTarget.name}`;
                 this.executingProgress = `已下訂單`;
               } else if (name === "confirmTransaction") {
-                this.hint = `${scheduleTarget.name}`;
                 this.executingProgress = `已確認訂單`;
+              } else if (name === "startAddToCart") {
+                this.executingProgress = `準備加入購物車`;
+              } else if (name === "selectSpec") {
+                this.executingProgress = `選擇規格中`;
               }
             })
           );
@@ -153,6 +152,7 @@
           };
         },
         async start() {
+          this.clearHint();
           shopeeController.on(
             "data",
             rpc.handle((data) => {
@@ -182,7 +182,7 @@
         scheduledDatetime: moment().format("YYYY-MM-DDTHH:mm:ss"),
         specs: [],
         schedulelist: [],
-        specSelected: ""
+        executingProgress: ""
       }
     });
   }

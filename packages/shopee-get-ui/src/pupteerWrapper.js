@@ -1,11 +1,12 @@
 const puppeteer = require("puppeteer");
 class PupteerWrapper {
-  async start({ headless = false } = {}) {
+  async start({ headless = false, multiple = false } = {}) {
     const b =
-      this.browser ||
-      (await puppeteer.launch({
-        headless
-      }));
+      this.browser && !multiple
+        ? this.browser
+        : await puppeteer.launch({
+            headless
+          });
 
     this.browser = b;
     return this.browser.wsEndpoint();

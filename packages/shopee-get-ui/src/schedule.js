@@ -3,7 +3,7 @@ const FileSync = require("lowdb/adapters/FileSync");
 const adapter = new FileSync("db.json");
 const db = low(adapter);
 const shortid = require("shortid");
-const jobScheduler = require("node-schedule");
+const CronJob = require("cron").CronJob;
 class Scheduler {
   constructor() {
     db.defaults({ products: [] }).write();
@@ -17,12 +17,22 @@ class Scheduler {
     });
   }
   planToSchedule(jobRunner, schedule) {
-    const job = jobScheduler.scheduleJob(schedule.datetime, async () => {
-      console.warn(
-        `start the schedule job ${schedule.url} at ${schedule.datetime}`
-      );
-      await jobRunner.execute(schedule);
-    });
+    const job = new CronJob(
+      new Date(schedule.datetime),
+      async (completed) => {
+        const now = new Date().toLocaleDateString();
+        console.warn(
+          `start the schedule job ${schedule.url}/${
+            schedule.datetime
+          } at ${new Date()}`
+        );
+        await jobRunner.execute(schedule);
+        completed();
+      },
+      () => {},
+      true
+    );
+    //const job = jobScheduler.scheduleJob(schedule.datetime, async () => {});
     this.schedules[schedule.datetime] = job;
     //console.warn("plat to schedule done", this.schedules);
   }
@@ -46,7 +56,7 @@ class Scheduler {
       .value();
     const job = this.schedules[schedule.datetime];
     if (job) {
-      job.cancel();
+      job.stop();
     }
     return db
       .get("products")
