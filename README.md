@@ -4,6 +4,10 @@
 
 ## Demo
 
+### Screenshot
+
+![](https://i.imgur.com/DUGZ7Se.png)
+
 ### Tell your product's spec
 
 - Step1: Paste product's url
