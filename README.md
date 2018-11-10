@@ -12,10 +12,10 @@
 - Step2: Select product's spec
 - Step3: Select schedule datetime
 
-![See Demo](https://www.youtube.com/watch?v=FO9I0xfKKqM)
+[See Demo](https://www.youtube.com/watch?v=FO9I0xfKKqM)
 
 ### Execute manually
 
 - Click `立即執行`
 
-![See Demo](https://youtu.be/6CKyQ3hVCTs)
+[See Demo](https://youtu.be/6CKyQ3hVCTs)
