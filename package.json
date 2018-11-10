@@ -1,0 +1,24 @@
+{
+  "name": "shopee_get",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "server/*",
+    "app/web/*"
+  ],
+  "scripts": {
+    "bootstrap": "lerna bootstrap"
+  },
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "puppeteer": "^1.10.0"
+  },
+  "devDependencies": {
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "lerna": "^3.4.3"
+  }
+}

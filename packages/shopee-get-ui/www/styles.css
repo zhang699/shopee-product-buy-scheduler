@@ -1,0 +1,106 @@
+button {
+  outline: none;
+  border: none;
+}
+.title,
+.hint {
+  color: white;
+}
+
+.executing-progress {
+  color: #f74d18;
+}
+.status {
+  color: white;
+}
+
+.flex {
+  display: flex;
+  flex-direction: column;
+}
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.dark-background {
+  background-color: #222222;
+}
+.padding {
+  padding: 10px;
+}
+.margin-small {
+  margin: 5px 5px;
+}
+
+.element {
+  height: 35px;
+}
+.button {
+  background-color: rgb(80, 117, 76);
+  color: white;
+}
+
+.primary {
+  background-color: #f74d18;
+}
+.caution {
+  background-color: red;
+}
+.shopee-style-button.button-selected {
+  background-color: #f74d18;
+}
+.secondary {
+  background-color: #414;
+}
+.button:hover {
+  background-color: black;
+}
+.button:active {
+  background-color: #dbd;
+}
+.button:disabled {
+  background-color: #ccc;
+}
+
+.shopee-style-button {
+  border: 1px #f74d18 solid;
+  color: white;
+  border-radius: 2px;
+  background: none;
+  background-color: transparent;
+  height: 40px;
+}
+
+.shopee-style-button:active {
+  background-color: #f74d18;
+  color: white;
+}
+
+.input {
+  border: 1px black solid;
+}
+
+.schedule-item {
+  margin: 0px 0px;
+}
+.schedule-url {
+  width: 50%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.schedule-spec {
+  width: 10%;
+}
+.schedule-datetime {
+  width: 20%;
+}
+.schedule-control {
+  width: 20%;
+}
+
+.schedule {
+  border-bottom: 1px #ccc solid;
+}

@@ -1,0 +1,189 @@
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="styles.css" />
+</head>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<body class="dark-background padding">
+  <div id="app" class="flex">
+    <h4 class="status">
+      {{ hint }} <span class="executing-progress">{{ executingProgress }}</span>
+    </h4>
+    <h4 class="title">Step 1. 輸入商品網址後點選開始</h4>
+    <input
+      class="margin-small input element"
+      v-model="url"
+      placeholder="貼上商品詳細的位址"
+    />
+    <button
+      :disabled="!url"
+      class="element button margin-small"
+      @click="start()"
+    >
+      點我開始
+    </button>
+
+    <h4 class="title margin">{{ productname }} Step 2. 選擇商品規格</h4>
+    <div class="margin-small flex-row">
+      <div class="spec" v-for="spec in specs">
+        <button
+          @click="selectSpec(spec)"
+          class="shopee-style-button margin-small"
+          :class="{'button-selected': specname === spec.text}"
+        >
+          {{ spec.text }}
+        </button>
+      </div>
+    </div>
+
+    <h4 class="title margin">Step 3. 設定在指定時間執行</h4>
+    <div class="control flex margin">
+      <input
+        class="margin-small element input"
+        type="datetime-local"
+        v-model="scheduledDatetime"
+      />
+      <button
+        @click="addToSchedule()"
+        class="margin-small element primary button"
+      >
+        加入排程
+      </button>
+    </div>
+
+    <h4 class="title margin">排程列表</h4>
+    <div v-if="schedulelist.length > 0" class="schedule-list">
+      <div class="flex-row schedule" v-for="schedule in schedulelist">
+        <h4 class="schedule-item schedule-url title">
+          {{ getScheduleTarget(schedule).name }}
+        </h4>
+        <h4 class="schedule-item schedule-spec title">
+          {{ schedule.specname }}
+        </h4>
+        <h4 class="schedule-item schedule-datetime title">
+          {{ schedule.datetime }}
+        </h4>
+        <div class="schedule-item schedule-control">
+          <button
+            class="element primary button"
+            @click="executeSchedule(schedule)"
+          >
+            立刻執行
+          </button>
+          <button
+            @click="removeSchedule(schedule)"
+            class="element caution button"
+          >
+            刪除
+          </button>
+        </div>
+      </div>
+    </div>
+    <h6 class="hint" v-else>尚未有任何排程加入</h6>
+  </div>
+</body>
+
+<script>
+  async function load(controller) {
+    window.shopeeController = controller;
+
+    var app = new Vue({
+      el: "#app",
+      async mounted() {
+        const scheduler = await shopeeController.getScheduler();
+        this.reloadSchedulelist(scheduler);
+      },
+      methods: {
+        async selectSpec(spec) {
+          this.specname = spec.text;
+          this.hint = `選擇產品規格${this.specname}`;
+        },
+
+        async confirmSpec() {
+          await shopeeController.confirmSpec({
+            name: this.specname,
+            url: this.url,
+            productname: this.productname
+          });
+        },
+        async removeSchedule(schedule) {
+          const scheduler = await shopeeController.getScheduler();
+          await scheduler.removeSchedule({ id: schedule.id });
+          await this.reloadSchedulelist(scheduler);
+        },
+        async addToSchedule() {
+          const scheduler = await shopeeController.getScheduler();
+          await scheduler.addToSchedule({
+            datetime: this.scheduledDatetime,
+            url: this.url,
+            specname: this.specname
+          });
+          await this.reloadSchedulelist(scheduler);
+        },
+        async executeSchedule(schedule) {
+          shopeeController.on(
+            "schedule",
+            rpc.handle((data) => {
+              const { name, target } = data;
+              const scheduleTarget = this.getScheduleTarget(target);
+              if (name === "addedToCart") {
+                this.hint = `${scheduleTarget.name}`;
+                this.executingProgress = `已加入購物車`;
+              } else if (name === "madeTransaction") {
+                this.hint = `${scheduleTarget.name}`;
+                this.executingProgress = `已下訂單`;
+              } else if (name === "confirmTransaction") {
+                this.hint = `${scheduleTarget.name}`;
+                this.executingProgress = `已確認訂單`;
+              }
+            })
+          );
+          await shopeeController.execute(schedule);
+        },
+        async reloadSchedulelist(scheduler) {
+          const scheduleResult = await scheduler.listSchedule();
+          this.schedulelist = scheduleResult;
+        },
+        getScheduleTarget(schedule) {
+          return {
+            name: decodeURIComponent(
+              schedule.url.replace("https://shopee.tw/", "")
+            )
+          };
+        },
+        async start() {
+          shopeeController.on(
+            "data",
+            rpc.handle((data) => {
+              const { name, type } = data;
+              console.warn("what is data", data);
+              if (name === "waitForAccountInput") {
+                this.hint = "等待使用者登入...";
+              } else if (name === "detectAccount") {
+                this.hint = "偵測到登入，紀錄cookie...";
+              } else if (name === "detectProduct") {
+                this.hint = "偵測到產品";
+                this.productname = data.productname;
+              } else if (name === "detectSpecs") {
+                this.hint = "偵測到產品規格，顯示規格....請選擇!!";
+                this.specs = data.specs;
+              }
+            })
+          );
+          await shopeeController.start(this.url);
+        }
+      },
+      data: {
+        hint: "",
+        specname: "",
+        productname: "",
+        url: "",
+        scheduledDatetime: moment().format("YYYY-MM-DDTHH:mm:ss"),
+        specs: [],
+        schedulelist: [],
+        specSelected: ""
+      }
+    });
+  }
+</script>
