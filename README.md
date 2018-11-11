@@ -32,8 +32,8 @@
 - 使用者操作 chromium 登入後會將 browser's cookie 存成檔名為 `cookie` 檔案
 - Chromium 有 `headerless=true` (不開啟 browser 背景執行)，`headerless=false` 開啟 browser ui 進行動作
 
-- 目前在[tell your product and login](###tell-your-product-and-login) 中使用 `headerless=false`，讓 使用者 可以操作 browser 進行登入
-- 在[Execute manually](###execute-manually) 或 schedule execute 中 不開啟 browser，來達到快速執行的目的，但缺點是使用者無法中途介入操作
+- 目前在[tell your product and login](#tell-your-product-and-login) 中使用 `headerless=false`，讓 使用者 可以操作 browser 進行登入
+- 在[Execute manually](#execute-manually) 或 schedule execute 中 不開啟 browser，來達到快速執行的目的，但缺點是使用者無法中途介入操作
 
 ### TODOs
 
