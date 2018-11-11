@@ -4,7 +4,7 @@
 
 ### Screenshot
 
-![](https://i.imgur.com/DUGZ7Se.png)
+<img src="https://i.imgur.com/DUGZ7Se.png" alt="alt text" width="200" height="whatever">
 
 ## Usage
 
