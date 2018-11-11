@@ -132,6 +132,20 @@ class ShopeeController extends EventEmitter {
       evaluate: true
     });
 
+    await page.waitForSelector(".loading-spinner-popup__container", {
+      hidden: true
+    });
+    const popupSelector = ".stardust-popup-button--main";
+    const popupExist = await page.$(popupSelector);
+
+    //stardust-popup-button stardust-popup-button--main
+    if (popupExist) {
+      await this.click(page, popupSelector, {
+        wait: true,
+        evaluate: true
+      });
+    }
+
     this.notifyScheduleProgress({
       name: "confirmTransaction",
       target: { ...schedule }
