@@ -1,11 +1,14 @@
 const puppeteer = require("puppeteer");
 const path = require("path");
+const isWin = process.platform === "win32";
 const isPkg = typeof process.pkg !== "undefined";
+/** https://github.com/zeit/pkg/issues/204#issuecomment-410728205 */
+const replaceRegex = isWin ? /^.*?\\node_modules\\puppeteer\\\.local-chromium/ : /^.*?\/node_modules\/puppeteer\/\.local-chromium/
 const chromiumExecutablePath = isPkg
   ? puppeteer
       .executablePath()
       .replace(
-        /^.*?\/node_modules\/puppeteer\/\.local-chromium/,
+     ,
         path.join(path.dirname(process.execPath), "chromium")
       )
   : puppeteer.executablePath();

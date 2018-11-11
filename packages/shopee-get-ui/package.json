@@ -7,7 +7,7 @@
     "shopee-scheduler": "./index.js"
   },
   "scripts": {
-    "build": "rm -rf ./build && pkg package.json --out-path ./build && cp -R ../../node_modules/puppeteer/.local-chromium build/chromium"
+    "build": "rm -rf ./build && pkg package.json --out-path ./build --targets node8 && cp -R ../../node_modules/puppeteer/.local-chromium build/chromium"
   },
   "dependencies": {
     "carlo": "^0.9.15",
