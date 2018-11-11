@@ -52,6 +52,12 @@
       </button>
     </div>
 
+    <button
+      @click="prepareBrowser()"
+      class="margin-small element primary button"
+    >
+      點我事先開好瀏覽器並登入
+    </button>
     <h4 class="title margin">排程列表</h4>
     <div v-if="schedulelist.length > 0" class="schedule-list">
       <div class="flex-row schedule" v-for="schedule in schedulelist">
@@ -95,6 +101,9 @@
         this.reloadSchedulelist(scheduler);
       },
       methods: {
+        async prepareBrowser() {
+          return shopeeController.prepareBrowser();
+        },
         async selectSpec(spec) {
           this.specname = spec.text;
           this.hint = `選擇產品規格${this.specname}`;

@@ -11,6 +11,9 @@ const chromiumExecutablePath = isPkg
   : puppeteer.executablePath();
 
 class PupteerWrapper {
+  constructor() {
+    this.browserList = [];
+  }
   async start({ headless = false, multiple = false } = {}) {
     const b =
       this.browser && !multiple
@@ -21,9 +24,19 @@ class PupteerWrapper {
           });
 
     this.browser = b;
+    this.browserList.push(b);
     return this.browser.wsEndpoint();
   }
-
+  async close() {
+    try {
+      for (const browser of this.browserList) {
+        await browser.close();
+      }
+      this.browserList = [];
+    } catch (e) {
+      console.warn(e);
+    }
+  }
   async goTo(url) {
     const pages = await this.browser.pages();
     const page =

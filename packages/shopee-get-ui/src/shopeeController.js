@@ -16,26 +16,46 @@ class ShopeeController extends EventEmitter {
     this.scheduler.loadSchedule(this);
   }
 
-  async click(page, selector, { wait = true } = {}) {
+  /** evaluate = true can speedup the click process because of transfer js code to execute in the browser */
+  async click(page, selector, { wait = true, evaluate = false } = {}) {
     if (wait) {
       await page.waitForSelector(selector);
     }
-    const target = await page.$(selector);
-    await target.click();
+
+    if (!evaluate) {
+      const target = await page.$(selector);
+      await target.click();
+    } else {
+      await page.evaluate((selector) => {
+        const $ = window.$;
+        const evalTarget = $(selector);
+        evalTarget.click();
+        return;
+      }, selector);
+    }
   }
 
   notifyScheduleProgress(bundle) {
     // make sure button click cause page transition
     this.emit("schedule", bundle);
   }
-  async execute(schedule) {
-    await this.puppeteer.start({ headless: true, multiple: true });
 
-    await this.goTo(schedule.url);
+  async prepareBrowser(url = URL, { headless = false } = {}) {
+    await this.puppeteer.close();
+    await this.puppeteer.start({
+      headless,
+      multiple: false
+    });
+    await this.setupCookie(url);
+  }
+  async setupCookie(url) {
+    await this.goTo(url);
     try {
-      await this.waitForAccount(500);
+      await this.waitForAccount(1000);
     } catch (e) {
-      console.error("no account goto setup");
+      console.error(
+        "no account detect... load cookie from file and setup to the page"
+      );
       if (!this.checkCookie()) {
         return this.emit("data", {
           name: "needCookieToContinue",
@@ -43,6 +63,14 @@ class ShopeeController extends EventEmitter {
         });
       }
     }
+  }
+  async execute(schedule, { openNewBrowser = false } = {}) {
+    await this.puppeteer.start({
+      headless: true,
+      multiple: openNewBrowser
+    });
+
+    await this.setupCookie(schedule.url);
 
     const page = this.puppeteer.getCurrentPage();
     this.notifyScheduleProgress({
@@ -62,8 +90,10 @@ class ShopeeController extends EventEmitter {
       await specButton.click();
     }
 
-    const buyButton = await page.$(".product-briefing .btn-solid-primary");
-    await buyButton.click();
+    await this.click(page, ".product-briefing .btn-solid-primary", {
+      wait: false,
+      evaluate: true
+    });
 
     // make sure button click cause page transition
     this.notifyScheduleProgress({
@@ -72,28 +102,36 @@ class ShopeeController extends EventEmitter {
     });
 
     //.toast
+    const prev = Date.now();
 
     await this.click(page, ".cart-page-footer__checkout-text", {
-      wait: true
+      wait: true,
+      evaluate: true
     });
-
-    await this.click(page, ".cart-page-footer__checkout-text", {
-      wait: true
-    });
-
+    const next = Date.now();
+    console.warn("current page.url", page.url());
     this.notifyScheduleProgress({
       name: "madeTransaction",
       target: { ...schedule }
     });
-    await this.click(page, ".page-checkout__payment-order-wrapper button", {
-      wait: true
+    /*await this.click(page, ".page-checkout__payment-order-wrapper button", {
+      wait: true,
+      evaluate: true
+    });*/
+    await page.waitForSelector(".loading-spinner-popup__container", {
+      hidden: true
     });
+    await page.waitForSelector(
+      ".checkout-product-ordered-list-item__shipping-selected-address"
+    );
     await page.waitForSelector(".loading-spinner-popup__container", {
       hidden: true
     });
     await this.click(page, ".page-checkout__payment-order-wrapper button", {
-      wait: false
+      wait: true,
+      evaluate: true
     });
+
     this.notifyScheduleProgress({
       name: "confirmTransaction",
       target: { ...schedule }
