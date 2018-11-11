@@ -1,6 +1,6 @@
 ## Introduction
 
-- 設定排程時間來執行 Shopee 購買商品的動作，用來省去人工購買商品的時間與操作
+- 設定排程時間來執行 Shopee 購買商品的動作，用來省去人工購買商品的等待時間與操作
 
 ### Screenshot
 
@@ -56,12 +56,16 @@
 
   > `Error: Execution context was destroyed, most likely because of a navigation
 
-- Used Libraries
+## Used Libraries
 
-  [node-cron 用在排程任務](https://github.com/kelektiv/node-cron)
+[node-cron 用在排程任務](https://github.com/kelektiv/node-cron)
 
-  [carlo 提供 nodejs GUI 的 Framework](https://github.com/GoogleChromeLabs/carlo)
+[carlo 提供 nodejs GUI 的 Framework](https://github.com/GoogleChromeLabs/carlo)
 
-  [puppteer UI 測試的自動化框架 用在操作 browser](https://github.com/GoogleChrome/puppeteer)
+[puppteer UI 測試的自動化框架 用在操作 browser](https://github.com/GoogleChrome/puppeteer)
 
-  [lowdb 記錄排成資料的輕便 db](https://github.com/typicode/lowdb)
+[lowdb 記錄排成資料的輕便 db](https://github.com/typicode/lowdb)
+
+## Thanks
+
+Inspired by [Shopee flash sale](https://shopee.tw/flash_sale/)

@@ -66,7 +66,7 @@
       :class="{'selected': headless}"
       class="margin-small element button border-only"
     >
-      背景模式(中途無法介入操作)
+      {{ headless ? "切換回一般模式" : "點選使用背景模式(中途無法介入操作)" }}
     </button>
     <h4 class="title margin">排程列表</h4>
     <div v-if="schedulelist.length > 0" class="schedule-list">
