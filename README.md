@@ -20,7 +20,7 @@
 
 [手動執行排程](https://youtu.be/6CKyQ3hVCTs)
 
-### Development
+## Development
 
 > cd ./packages/shopee-get-ui && yarn
 
@@ -35,7 +35,7 @@
 - 目前在[tell your product and login](#tell-your-product-and-login) 中使用 `headerless=false`，讓 使用者 可以操作 browser 進行登入
 - 在[Execute manually](#execute-manually) 或 schedule execute 中 不開啟 browser，來達到快速執行的目的，但缺點是使用者無法中途介入操作
 
-### TODOs
+## TODOs
 
 - [ ] 增加`小米`網站的支援
 - [ ] 打包成各平台的 distribution (windows/mac)
@@ -44,7 +44,7 @@
 - [ ] 執行期間的 log
 - [ ] 多開 browser 與 多分頁(同一 browser) 在搶購上是否會有速度上的影響 目前已知 單一 chrome browser 有 max concurrrent connection 為 6 的限制，但若 browser 不同 會有每個都要先設置 cookie 的前置操作時間
 
-### Known Issues
+## Known Issues
 
 - 開啟 browser 的操作，似乎沒有非常快速，可能是 `waitForXXX` 的原因
 - 有時即便倒入 cookie 後 還會要求使用者登入
