@@ -4,7 +4,7 @@
 
 ### Screenshot
 
-<img src="https://i.imgur.com/DUGZ7Se.png" alt="alt text" width="200" height="whatever">
+<img src="https://i.imgur.com/DUGZ7Se.png" alt="alt text" width="300" height="whatever">
 
 ## Usage
 
@@ -30,13 +30,14 @@
 
 - 開發目前只在 MAC OS Mojave 上用過
 - 使用者操作 chromium 登入後會將 browser's cookie 存成檔名為 `cookie` 檔案
-- Chromium 有 `headerless=true` (不開啟 browser 背景執行)，`headerless=false`  開啟 browser ui 進行動作
+- Chromium 有 `headerless=true` (不開啟 browser 背景執行)，`headerless=false` 開啟 browser ui 進行動作
 
 - 目前在`Tell your product and login` 中使用 headerless=false，讓 使用者 可以操作 browser 進行登入
 - 在`Execute manually` 或 schedule execute 中 不開啟 browser，來達到快速執行的目的，但缺點是使用者無法中途介入操作
 
 ### TODOs
 
+- [ ] 增加`小米`網站的支援
 - [ ] 打包成各平台的 distribution (windows/mac)
 - [ ] 介面上增加`headless`與否的選項，區分人在與不在電腦前的兩種使用情境
 - [ ] Solve known issues ..
