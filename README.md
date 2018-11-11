@@ -29,7 +29,7 @@
 ### Notice
 
 - 開發目前只在 MAC OS Mojave 上用過
--  使用者操作 chromium 登入後會將 browser's cookie 存成檔名為 `cookie` 檔案
+- 使用者操作 chromium 登入後會將 browser's cookie 存成檔名為 `cookie` 檔案
 - Chromium 有 `headerless=true` (不開啟 browser 背景執行)，`headerless=false`  開啟 browser ui 進行動作
 
 - 目前在`Tell your product and login` 中使用 headerless=false，讓 使用者 可以操作 browser 進行登入
@@ -44,10 +44,10 @@
 
 ### Known Issues
 
-- 開啟 browser 的操作，似乎  沒有非常快速，可能是 `waitForXXX` 的原因
+- 開啟 browser 的操作，似乎沒有非常快速，可能是 `waitForXXX` 的原因
 - 有時即便倒入 cookie 後 還會要求使用者登入
 - 一分鐘內秒殺的商品很常出現 `Timeout Error` 與 `Execution Context was destoyed`
-  前者可能是找不到 `下訂單`的按扭，或是點選`直接購買`沒有反應
+  前者可能是找不到 `下訂單`的按扭，或是點選`直接購買`沒有反應
   (按鈕為 disabled)
 
   > `TimeoutError: waiting for selector ".cart-page-footer__checkout-text" failed: timeout 30000ms exceeded`
@@ -62,5 +62,4 @@
 
   [puppteer UI 測試的自動化框架 用在操作 browser](https://github.com/GoogleChrome/puppeteer)
 
-  [lowdb  記錄排成資料的輕便 db](https://github.com/typicode/lowdb)
-  
+  [lowdb 記錄排成資料的輕便 db](https://github.com/typicode/lowdb)
