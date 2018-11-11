@@ -42,6 +42,7 @@
 - [ ] 介面上增加`headless`與否的選項，區分人在與不在電腦前的兩種使用情境
 - [ ] Solve known issues ..
 - [ ] 執行期間的 log
+- [ ] 多開 browser 與 多分頁(同一 browser) 在搶購上是否會有速度上的影響 目前已知 單一 chrome browser 有 max concurrrent connection 為 6 的限制，但若 browser 不同 會有每個都要先設置 cookie 的前置操作時間
 
 ### Known Issues
 

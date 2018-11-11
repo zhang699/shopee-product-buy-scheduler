@@ -29,11 +29,11 @@ class ShopeeController extends EventEmitter {
     this.emit("schedule", bundle);
   }
   async execute(schedule) {
-    await this.puppeteer.start({ headless: true, multiple: false });
+    await this.puppeteer.start({ headless: true, multiple: true });
 
     await this.goTo(schedule.url);
     try {
-      await this.waitForAccount(1000);
+      await this.waitForAccount(500);
     } catch (e) {
       console.error("no account goto setup");
       if (!this.checkCookie()) {
