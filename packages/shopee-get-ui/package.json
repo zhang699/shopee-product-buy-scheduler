@@ -24,5 +24,8 @@
   "pkg": {
     "scripts": "../../node_modules/puppeteer/lib/*.js",
     "assets": "www/**/*"
+  },
+  "engines": {
+    "node": ">=8.10.0"
   }
 }

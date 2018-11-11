@@ -15,6 +15,7 @@ secret/
 lib-cov
 puppeteer/
 cookie
+build/
 *.exe
 *-macos
 # Coverage directory used by tools like istanbul
