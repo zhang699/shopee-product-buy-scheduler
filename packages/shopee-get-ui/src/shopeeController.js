@@ -14,6 +14,7 @@ class ShopeeController extends EventEmitter {
     this.puppeteer = new PupteerWrapper();
     this.scheduler = new Scheduler();
     this.scheduler.loadSchedule(this);
+    this.headless = false;
   }
 
   /** evaluate = true can speedup the click process because of transfer js code to execute in the browser */
@@ -40,7 +41,10 @@ class ShopeeController extends EventEmitter {
     this.emit("schedule", bundle);
   }
 
-  async prepareBrowser(url = URL, { headless = false } = {}) {
+  setHeadless(headless) {
+    this.headless = headless;
+  }
+  async prepareBrowser(url = URL, { headless = this.headless } = {}) {
     await this.puppeteer.close();
     await this.puppeteer.start({
       headless,
@@ -64,9 +68,12 @@ class ShopeeController extends EventEmitter {
       }
     }
   }
-  async execute(schedule, { openNewBrowser = false } = {}) {
+  async execute(
+    schedule,
+    { openNewBrowser = false, headless = this.headless } = {}
+  ) {
     await this.puppeteer.start({
-      headless: true,
+      headless,
       multiple: openNewBrowser
     });
 
@@ -141,7 +148,7 @@ class ShopeeController extends EventEmitter {
     //stardust-popup-button stardust-popup-button--main
     if (popupExist) {
       await this.click(page, popupSelector, {
-        wait: true,
+        wait: false,
         evaluate: true
       });
     }

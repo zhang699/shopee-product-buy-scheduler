@@ -107,3 +107,13 @@ button {
 .schedule {
   border-bottom: 1px #ccc solid;
 }
+
+.border-only.button {
+  border: 1px green solid;
+  background-color: transparent;
+  color: white;
+}
+.border-only.selected {
+  background-color: green;
+  color: white;
+}

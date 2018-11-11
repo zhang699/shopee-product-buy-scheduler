@@ -20,7 +20,8 @@ class PupteerWrapper {
         ? this.browser
         : await puppeteer.launch({
             executablePath: chromiumExecutablePath,
-            headless
+            headless,
+            args: ["--disable-dev-shm-usage"]
           });
 
     this.browser = b;
@@ -31,8 +32,10 @@ class PupteerWrapper {
     try {
       for (const browser of this.browserList) {
         await browser.close();
+        await browser.process().kill();
       }
       this.browserList = [];
+      this.browser = null;
     } catch (e) {
       console.warn(e);
     }

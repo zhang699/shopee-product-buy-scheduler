@@ -52,11 +52,21 @@
       </button>
     </div>
 
+    <h4 class="title margin">其他</h4>
+
     <button
       @click="prepareBrowser()"
       class="margin-small element primary button"
     >
       點我事先開好瀏覽器並登入
+    </button>
+
+    <button
+      @click="toggleHeadless()"
+      :class="{'selected': headless}"
+      class="margin-small element button border-only"
+    >
+      背景模式(中途無法介入操作)
     </button>
     <h4 class="title margin">排程列表</h4>
     <div v-if="schedulelist.length > 0" class="schedule-list">
@@ -99,8 +109,14 @@
       async mounted() {
         const scheduler = await shopeeController.getScheduler();
         this.reloadSchedulelist(scheduler);
+        this.headless = await shopeeController.headless();
       },
       methods: {
+        async toggleHeadless() {
+          await shopeeController.setHeadless(!this.headless);
+          this.headless = await shopeeController.headless();
+          console.warn("what is headless", await shopeeController.headless());
+        },
         async prepareBrowser() {
           return shopeeController.prepareBrowser();
         },
@@ -191,7 +207,8 @@
         scheduledDatetime: moment().format("YYYY-MM-DDTHH:mm:ss"),
         specs: [],
         schedulelist: [],
-        executingProgress: ""
+        executingProgress: "",
+        headless: false
       }
     });
   }
