@@ -1,5 +1,5 @@
 {
-  "name": "shopee-get-ui",
+  "name": "shopee-product-buy-scheduler",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -7,7 +7,7 @@
     "shopee-scheduler": "./index.js"
   },
   "scripts": {
-    "build": "rm -rf ./build && pkg . --out-path ./build && cp -R ../../node_modules/puppeteer/.local-chromium build/chromium"
+    "build": "rm -rf ./build && pkg package.json --out-path ./build && cp -R ../../node_modules/puppeteer/.local-chromium build/chromium"
   },
   "dependencies": {
     "carlo": "^0.9.15",
