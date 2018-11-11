@@ -1,10 +1,22 @@
 const puppeteer = require("puppeteer");
+const path = require("path");
+const isPkg = typeof process.pkg !== "undefined";
+const chromiumExecutablePath = isPkg
+  ? puppeteer
+      .executablePath()
+      .replace(
+        /^.*?\/node_modules\/puppeteer\/\.local-chromium/,
+        path.join(path.dirname(process.execPath), "chromium")
+      )
+  : puppeteer.executablePath();
+
 class PupteerWrapper {
   async start({ headless = false, multiple = false } = {}) {
     const b =
       this.browser && !multiple
         ? this.browser
         : await puppeteer.launch({
+            executablePath: chromiumExecutablePath,
             headless
           });
 
