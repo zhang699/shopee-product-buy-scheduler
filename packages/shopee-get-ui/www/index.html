@@ -110,12 +110,28 @@
         const scheduler = await shopeeController.getScheduler();
         this.reloadSchedulelist(scheduler);
         this.headless = await shopeeController.headless();
+
+        this.initialPrepareHandler = rpc.handle((data) => {
+          const { name, type } = data;
+          this.executingProgress = "";
+          if (name === "waitForAccountInput") {
+            this.hint = "等待使用者登入...";
+          } else if (name === "detectAccount") {
+            this.hint = "偵測到登入，紀錄cookie...";
+          } else if (name === "detectProduct") {
+            this.hint = "偵測到產品";
+            this.productname = data.productname;
+          } else if (name === "detectSpecs") {
+            this.hint = "偵測到產品規格，顯示規格....請選擇!!";
+            this.specs = data.specs;
+          }
+        });
+        shopeeController.on("data", this.initialPrepareHandler);
       },
       methods: {
         async toggleHeadless() {
           await shopeeController.setHeadless(!this.headless);
           this.headless = await shopeeController.headless();
-          console.warn("what is headless", await shopeeController.headless());
         },
         async prepareBrowser() {
           return shopeeController.prepareBrowser();
@@ -178,24 +194,6 @@
         },
         async start() {
           this.clearHint();
-          shopeeController.on(
-            "data",
-            rpc.handle((data) => {
-              const { name, type } = data;
-              console.warn("what is data", data);
-              if (name === "waitForAccountInput") {
-                this.hint = "等待使用者登入...";
-              } else if (name === "detectAccount") {
-                this.hint = "偵測到登入，紀錄cookie...";
-              } else if (name === "detectProduct") {
-                this.hint = "偵測到產品";
-                this.productname = data.productname;
-              } else if (name === "detectSpecs") {
-                this.hint = "偵測到產品規格，顯示規格....請選擇!!";
-                this.specs = data.specs;
-              }
-            })
-          );
           await shopeeController.start(this.url);
         }
       },

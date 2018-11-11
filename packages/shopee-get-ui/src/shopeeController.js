@@ -50,22 +50,29 @@ class ShopeeController extends EventEmitter {
       headless,
       multiple: false
     });
-    await this.setupCookie(url);
+    const containCookie = await this.setupCookie(url);
+
+    if (!containCookie) {
+      await this.saveCookie();
+    }
   }
   async setupCookie(url) {
     await this.goTo(url);
     try {
       await this.waitForAccount(1000);
+      return true;
     } catch (e) {
       console.error(
         "no account detect... load cookie from file and setup to the page"
       );
-      if (!this.checkCookie()) {
-        return this.emit("data", {
+      if (!(await this.checkCookie())) {
+        this.emit("data", {
           name: "needCookieToContinue",
           cookie: null
         });
+        return false;
       }
+      return true;
     }
   }
   async execute(
@@ -172,12 +179,8 @@ class ShopeeController extends EventEmitter {
       return false;
     }
   }
-  async start(url = URL) {
-    await this.puppeteer.start();
-    const page = await this.goTo(url);
 
-    const containCookie = await this.checkCookie();
-
+  async saveCookie() {
     await this.waitForAccount();
 
     const shopeeCookie = await this.puppeteer.getCurrentPage().cookies();
@@ -185,6 +188,14 @@ class ShopeeController extends EventEmitter {
     fs.writeFileSync("./cookie", JSON.stringify(shopeeCookie));
 
     this.emit("data", { name: "detectAccount", cookie: shopeeCookie });
+  }
+  async start(url = URL) {
+    await this.puppeteer.start();
+    const page = await this.goTo(url);
+
+    const containCookie = await this.checkCookie();
+
+    await this.saveCookie();
 
     this.emit("data", {
       name: "detectProduct",
