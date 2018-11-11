@@ -4,7 +4,7 @@
 
 ### Screenshot
 
-<img src="https://i.imgur.com/DUGZ7Se.png" alt="alt text" width="300" height="whatever">
+<img src="https://i.imgur.com/bZdUF6c.png" alt="alt text" width="300" height="whatever">
 
 ## Usage
 
