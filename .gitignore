@@ -16,6 +16,7 @@ lib-cov
 puppeteer/
 cookie
 build/
+db.json
 *.exe
 *-macos
 # Coverage directory used by tools like istanbul
